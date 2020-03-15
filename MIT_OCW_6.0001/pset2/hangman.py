@@ -51,7 +51,7 @@ def choose_word(wordlist):
 wordlist = load_words()
 
 
-def is_word_guessed(secret_word, letters_guessed):
+def is_word_guessed(secret_word, guessed_word):
     '''
     secret_word: string, the word the user is guessing; assumes all letters are
       lowercase
@@ -60,12 +60,11 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    return True if secret_word == guessed_word else False
 
 
 
-def get_guessed_word(secret_word, letters_guessed):
+def get_guessed_word(secret_word, guessed_word):
     '''
     secret_word: string, the word the user is guessing
     letters_guessed: list (of letters), which letters have been guessed so far
@@ -86,7 +85,8 @@ def get_available_letters(letters_guessed):
     letters_available = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
     if len(letters_guessed) > 0:
         for letter in letters_guessed:
-            letters_available.remove(letter)
+            if letter in letters_available:
+                letters_available.remove(letter)
     return letters_available
     
 
@@ -120,16 +120,38 @@ def hangman(secret_word):
     letters_guessed = []
     censored_word = ['_' for i in range(len(secret_word))]
     
-    for num in range(6):
+    count = 6
+    
+    while count > 0:
         print(censored_word)
-        print("\nYou have " + str(6 - num) + " guesses\nThese are the available letters:")
-        print(get_available_letters(letters_guessed))
+        print("\nYou have " + str(count) + " guesses")
+        print("These are the available letters: " + " ".join(get_available_letters(letters_guessed)))
         guess = input("Guess a letter: ")
         letters_guessed.append(guess)
         
-        
+        if secret_word.find(guess) >= 0:
+            print('"' + guess + '"' + " is in the secret word")            
+            replacement_indexes = [i for i, a in enumerate(secret_word) if a == guess]
+            for i in replacement_indexes:
+                censored_word[i] = guess
+            if is_word_guessed(secret_word, "".join(censored_word)):
+                break
+        else:
+            print('Sorry. "' + guess + '"' + " is NOT in the secret word")
+            count -= 1
     
-    print(letters_guessed)
+    print(censored_word)
+    if is_word_guessed(secret_word, "".join(censored_word)):
+        
+        print("You guessed all the letters! YOU WIN, GOOD JOB!")
+    else:
+        guessed_word = input("Final guess of the word? ")
+        if is_word_guessed(secret_word, guessed_word):
+            print("YOU WIN, GOOD JOB!")
+        else:
+            print("\nGAME OVER, you lose! You guessed:")
+            print(letters_guessed)
+            print("The secret word was " + secret_word)
     
     return letters_guessed
 
