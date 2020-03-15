@@ -83,9 +83,11 @@ def get_available_letters(letters_guessed):
     returns: string (of letters), comprised of letters that represents which letters have not
       yet been guessed.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-    
+    letters_available = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    if len(letters_guessed) > 0:
+        for letter in letters_guessed:
+            letters_available.remove(letter)
+    return letters_available
     
 
 def hangman(secret_word):
@@ -113,8 +115,23 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    print("\nThe word contains " + str(len(secret_word)) + " letters.")
+    
+    letters_guessed = []
+    censored_word = ['_' for i in range(len(secret_word))]
+    
+    for num in range(6):
+        print(censored_word)
+        print("\nYou have " + str(6 - num) + " guesses\nThese are the available letters:")
+        print(get_available_letters(letters_guessed))
+        guess = input("Guess a letter: ")
+        letters_guessed.append(guess)
+        
+        
+    
+    print(letters_guessed)
+    
+    return letters_guessed
 
 
 
