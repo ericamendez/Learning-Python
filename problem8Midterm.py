@@ -21,3 +21,4 @@ L = [0, -10, 5, 6, -4]
 
 print(applyF_filterG(L, f, g))
 print(L)
+
